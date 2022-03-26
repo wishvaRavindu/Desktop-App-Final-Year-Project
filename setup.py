@@ -22,7 +22,7 @@ setup(
     url = 'https://github.com/wishvaRavindu/Desktop-App-Final-Year-Project.git',
 
     install_requires = [
-        "opencv-python == 3.4.0.14",
+        "opencv-python>=4.2.0.32",
         "eel == 0.12.0",
         "pybase64 == 1.2.1"
     ],
