@@ -23,8 +23,8 @@ setup(
 
     install_requires = [
         "opencv-python>=4.2.0.32",
-        "eel == 0.12.0",
-        "pybase64 == 1.2.1"
+        "eel>=0.13.0",
+        "pybase64>=1.1.0"
     ],
 
     keywords = "road anomalies, governments",
