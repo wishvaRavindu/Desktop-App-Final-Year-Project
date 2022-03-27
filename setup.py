@@ -42,6 +42,8 @@ setup(
 
     python_requires='>=3.7',
 
+    scripts=['bin/main.py'],
+
     classifiers=[
          # I can say what phase of development my library is in.
         'Development Status :: 3 - Alpha',
