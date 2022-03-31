@@ -1,0 +1,6 @@
+#the connection string for the storage account
+azure_storage_connection_string: "DefaultEndpointsProtocol=https;AccountName=imgdetection0465019816;AccountKey=m6f7TJts2yoensT2xCv3PKjFkoc6VdlCCfze0ovN6ueWoGm/UpgdtzMKsAzVtLKIUY91jX2gzcZanLr0fxVcRQ==;EndpointSuffix=core.windows.net"
+#the container name for storing the images
+frame_container_name: "checkaccount"
+#the local folder with the images and text files
+frame_folder: "/Users/wishvapeiris/Desktop/FinalYearProject/Object_Detection_limited/frames"
