@@ -1,6 +1,6 @@
 
 document.getElementById("InitiateDetection").addEventListener("click",async() =>{
-    await eel.initateAnomalyDetection();
+    await eel.video_feed();
 })
 
 document.getElementById("close_detection").addEventListener("click",async() =>{
@@ -21,8 +21,8 @@ document.getElementById("close_detection").addEventListener("click",async() =>{
 //}
 //
 //
-//eel.expose(updateImageSrc);
-//function updateImageSrc(val) {
-//    let elem = document.getElementById('bg');
-//    elem.src = "data:image/jpeg;base64," + val
-//}
+eel.expose(updateImageSrc);
+function updateImageSrc(val) {
+    let elem = document.getElementById('bg');
+    elem.src = "data:image/jpeg;base64," + val
+}
