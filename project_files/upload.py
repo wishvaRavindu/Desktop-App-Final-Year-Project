@@ -7,7 +7,7 @@ from azure.storage.blob import ContainerClient
 def load_config():
     dir_root = os.path.dirname(os.path.realpath(__file__))
     print("the dir ", dir_root)
-    with open(dir_root + "\config.yaml", "r") as yamlfile:
+    with open(dir_root + "/config.yaml", "r") as yamlfile:
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 
@@ -35,5 +35,8 @@ def upload(files, connection_string, container_name):
 
 def main():
     config = load_config()
-    frames = get_files(config["frame_folder"])
-    upload(frames, config["azure_storage_connection_string"], config["frame_container_name"])
+    dir_root = os.path.dirname(os.path.realpath(__file__))
+    full_path = dir_root+"/frames"
+    files_to_upload = get_files(full_path)
+
+    upload(files_to_upload, config["azure_storage_connection_string"], config["frame_container_name"])
