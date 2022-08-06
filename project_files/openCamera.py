@@ -1,7 +1,10 @@
 import cv2 as cv
 import time
 import math
-import sys
+from azure.storage.blob import ContainerClient
+import upload
+import accessLocation
+import saveLocationData
 
 
 class VideoCamera(object):
@@ -13,6 +16,7 @@ class VideoCamera(object):
         self.cap = cv.VideoCapture(test_video)
         self.frame_counter = 0
         self.anomaly_tracker = 0
+        self.fileCounterTracker = 0
         list_of_detection = []
         self.center_point_previous_point = []
         object_tracker = {}
@@ -23,7 +27,7 @@ class VideoCamera(object):
 
         self.class_name = ["pothole", "shadow", "manhole"]
 
-        weights_path = "./weights/yolov4-custom_4000.weights"
+        weights_path = "./weights-file/yolov4-custom_4000.weights"
         config_file_path = "./config-file/yolov4-custom.cfg"
         net = cv.dnn.readNet(weights_path, config_file_path)
 
@@ -35,12 +39,25 @@ class VideoCamera(object):
         frame_width = self.cap.get(cv.CAP_PROP_FRAME_WIDTH)
         frame_height = self.cap.get(cv.CAP_PROP_FRAME_HEIGHT)
 
+        configFile_values = upload.load_config()
+        container_client = ContainerClient.from_connection_string(configFile_values["azure_storage_connection_string"],
+                                                                  configFile_values["frame_container_name"])
+        blob_list = container_client.list_blobs()
+        count = 0
+        for blob in blob_list:
+            count += 1
+
+        if count != 0:
+            self.fileCounterTracker = int(count/2)
+
         # cap.set(cv.CAP_PROP_FPS, 7)
         dim = (int(frame_width), int(frame_height))
         starting_time = time.time()
 
     def __del__(self):
+        self.window_close = True
         self.cap.release()
+        cv.destroyAllWindows()
 
     # converting the box values into pixel values.
     def convert(self, img_size, box):
@@ -63,7 +80,7 @@ class VideoCamera(object):
         return [x_center, y_center, w, h]
 
     def write_to_txt(self, list_of_detection, frame_counter):
-        f = open("./frames/" + 'Frame' + str(frame_counter) + ".txt", "a")
+        f = open("./frames/" + 'Frame' + str(self.fileCounterTracker) + ".txt", "a")
         for x in list_of_detection:
             separator = ","
             x = separator.join(map(str, x))
@@ -77,6 +94,7 @@ class VideoCamera(object):
         height, width, _ = frame.shape
         result = frame[100:360, 120:640]
         self.frame_counter += 1
+        self.fileCounterTracker +=1
         center_point = []
 
         frame = cv.resize(result, dim, interpolation=cv.INTER_AREA)
@@ -104,7 +122,7 @@ class VideoCamera(object):
                 list_of_detection.append(bb)
 
                 # the images will be saved into the frames folder
-                cv.imwrite('./frames/' + 'Frame' + str(self.frame_counter) + '.jpg', frame_without_boxes)
+                cv.imwrite('./frames/' + 'Frame' + str(self.fileCounterTracker) + '.jpg', frame_without_boxes)
 
         # only at the start we compare the previouse and current framw
         if self.frame_counter <= 2:
@@ -134,6 +152,9 @@ class VideoCamera(object):
 
                 # remove the ids
                 if not anomaly_object_exist:
+                    locationTracking = accessLocation.findGPSLocation()
+                    saveLocationData.saveAnomalyLocations(locationTracking)
+                    print("the location value - ",locationTracking)
                     # get the location from this position where the id of the tracker will be removed
                     object_tracker.pop(anomaly_objects_id)
 
@@ -161,6 +182,10 @@ class VideoCamera(object):
 
         # center point previous frame location
         self.center_point_previous_point = center_point.copy()
+
+        if self.window_close:
+            self.cap.release()
+            cv.destroyAllWindows()
 
         # We are using Motion JPEG, but OpenCV defaults to capture raw images,
         # so we must encode it into JPEG in order to correctly display the
