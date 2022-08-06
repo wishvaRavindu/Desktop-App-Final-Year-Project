@@ -1,4 +1,4 @@
 #the connection string for the storage account
-azure_storage_connection_string: "DefaultEndpointsProtocol=https;AccountName=potholedetecti7310831393;AccountKey=XOGMSS/NOqHkIWgxf55XXAKDBLJLfxi2Ut0oZqLfSi0hGt91SCNYkajbFcFFy54eOXG9ZSRvamYiuk/KSukirA==;EndpointSuffix=core.windows.net"
+azure_storage_connection_string: "DefaultEndpointsProtocol=https;AccountName=anomalydetection9ef6;AccountKey=pv9jYOxTJDDcMSR55I1Y+pdJRAJAOc0nDLRfbw4yiSC3pp8FcAtFFEhcIhnTEZvEZzNGEWf+nyLZ+AStR7uhZA==;EndpointSuffix=core.windows.net"
 #the container name for storing the images
-frame_container_name: "pictures"
+frame_container_name: "anomaly-data"

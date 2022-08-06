@@ -21,7 +21,7 @@ def gen(camera,closeWindow):
 
     cv2.destroyAllWindows()
     time.sleep(5)
-    # upload.main()
+    upload.main()
     sys.exit()
 
 
@@ -37,6 +37,7 @@ def closeDetection():
 @eel.expose()
 def video_feed(closeWindow):
     x = VideoCamera()
+
     y = gen(x,closeWindow)
 
     for each in y:

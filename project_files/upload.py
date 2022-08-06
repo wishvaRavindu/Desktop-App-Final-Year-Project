@@ -32,6 +32,8 @@ def upload(files, connection_string, container_name):
             os.remove(file)
             print(f'{file.name} removed from folder')
 
+    return True
+
 
 def main():
     config = load_config()
@@ -39,4 +41,5 @@ def main():
     full_path = dir_root+"/frames"
     files_to_upload = get_files(full_path)
 
-    upload(files_to_upload, config["azure_storage_connection_string"], config["frame_container_name"])
+    result = upload(files_to_upload, config["azure_storage_connection_string"], config["frame_container_name"])
+    return result
