@@ -1,10 +1,11 @@
 
 document.getElementById("InitiateDetection").addEventListener("click",async() =>{
-    await eel.video_feed();
+    await eel.video_feed(false);
+    console.log("hello world")
 })
 
 document.getElementById("close_detection").addEventListener("click",async() =>{
-    await eel.closeDetection();
+    await eel.video_feed(true);
 })
 
 //document.getElementById("viewDetection").addEventListener("click",async() =>{

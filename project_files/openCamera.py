@@ -23,7 +23,7 @@ class VideoCamera(object):
 
         self.class_name = ["pothole", "shadow", "manhole"]
 
-        weights_path = "./weights/yolov4-custom_4000.weights"
+        weights_path = "./weights-file/yolov4-custom_3000.weights"
         config_file_path = "./config-file/yolov4-custom.cfg"
         net = cv.dnn.readNet(weights_path, config_file_path)
 
@@ -40,7 +40,9 @@ class VideoCamera(object):
         starting_time = time.time()
 
     def __del__(self):
+        self.window_close = True
         self.cap.release()
+        cv.destroyAllWindows()
 
     # converting the box values into pixel values.
     def convert(self, img_size, box):
@@ -161,6 +163,10 @@ class VideoCamera(object):
 
         # center point previous frame location
         self.center_point_previous_point = center_point.copy()
+
+        if self.window_close:
+            self.cap.release()
+            cv.destroyAllWindows()
 
         # We are using Motion JPEG, but OpenCV defaults to capture raw images,
         # so we must encode it into JPEG in order to correctly display the
